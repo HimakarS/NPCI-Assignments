@@ -1,0 +1,258 @@
+Name: Himakar Sandiri
+e-Mail ID: himakarsandiri@gmail.com
+
+Guided assignment 26-07-2022
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ArrayListOperations {
+
+	public static void main(String[] args) {
+		List <String> listOfStrings = new ArrayList<String>();
+        listOfStrings.add("C");
+        listOfStrings.add("C++");
+        listOfStrings.add("Java");
+        listOfStrings.add("Python3");
+        
+        System.out.println(listOfStrings.size());
+        System.out.println(listOfStrings.isEmpty());
+        System.out.println(listOfStrings.get(0));
+        listOfStrings.set(3, "Python");
+        System.out.println(listOfStrings);
+        
+        List <String> newListOfStrings = new ArrayList<String>();
+        newListOfStrings.add("R");
+        newListOfStrings.add("MySQL");
+        newListOfStrings.add("save");
+        newListOfStrings.add("vase");
+        newListOfStrings.add("cat");
+        newListOfStrings.add("tac");
+        newListOfStrings.add("Rome");
+        newListOfStrings.add("more");
+        listOfStrings.addAll(newListOfStrings);
+        System.out.println(listOfStrings);
+        
+        List <String> anagramsList = new ArrayList <String>();
+        
+        for(int i = 0; i < listOfStrings.size(); i++) {
+        	char[] charArray1 = listOfStrings.get(i).toLowerCase().toCharArray();
+        	Arrays.sort(charArray1);
+        	for(int j = i+1; j < listOfStrings.size(); j++) {
+        		char[] charArray2 = listOfStrings.get(j).toLowerCase().toCharArray();
+        		Arrays.sort(charArray2);
+        		if(Arrays.equals(charArray1, charArray2)) {
+        			
+        			
+        			anagramsList.add(listOfStrings.get(i));
+        			anagramsList.add(listOfStrings.get(j));
+        		}
+        	}
+        	
+        	
+        }
+        System.out.println(anagramsList);
+
+	}
+
+}
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class CommonElementsInSet {
+
+	public static void main(String[] args) {
+		Set <Integer> s1 = new HashSet<Integer>();
+		s1.add(1);
+		s1.add(2);
+		s1.add(3);
+		s1.add(4);
+		s1.add(5);
+		
+		Set <Integer> s2 = new HashSet<Integer>();
+		s2.add(2);
+		s2.add(3);
+		s2.add(4);
+		
+//		Set <Integer> commonElements = new HashSet<Integer>(s1);
+//		System.out.println(commonElements);		
+		
+		s1.retainAll(s2);
+		System.out.println(s1);
+
+	}
+
+}
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class LinkedListOperations {
+
+	public static void main(String[] args) {
+		
+		LinkedList<Integer> ll = new LinkedList<Integer>();
+		
+		List <Integer> digits = new ArrayList<Integer>();
+		digits.add(1);
+		digits.add(2);
+		digits.add(3);
+		digits.add(4);
+		digits.add(5);
+		
+		ll.addAll(digits); //addAll
+		
+		ll.add(6); //add
+		
+		System.out.println(ll.size()); //size()
+		
+		ll.addFirst(0); //addFirst - Adding 0 at the first index
+		
+		ll.addLast(6); //addLast - Adding 6 at the last index
+		
+		ll.add(2);
+		ll.add(3);
+		System.out.println(ll.lastIndexOf(2)); //lastIndexOf(2) - Returns the last index of the integer 2 in the linked list
+		System.out.println(ll.lastIndexOf(10)); //Returns -1 as 10 is not present in the linked list
+		System.out.println(ll.indexOf(2)); //Returns the first index of the integer 2 in the linked list
+		System.out.println(ll.indexOf(10)); //Returns -1 as 10 is not present in the linked list
+		
+		System.out.println(ll.peek()); //Returns the head
+		System.out.println(ll.peekFirst()); //Returns the first element
+		System.out.println(ll.peekLast()); //Returns the last element
+		
+		System.out.println(ll);
+		
+		int head = ll.poll(); //poll() - Removes and returns the head of the linked list
+		int first = ll.pollFirst(); //pollFirst() - Removes and returns the first element of the linked list
+		int last = ll.pollLast(); //pollLast() - Removes and returns the last element of the linked list
+		
+		System.out.println("Head = " + head);
+		System.out.println("First = " + first);
+		System.out.println("Last = " + last);
+		
+		System.out.println(ll);
+	}
+
+}
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class MainMovie {
+
+	public static void main(String[] args) {
+		
+		Movie m1 = new Movie("Movie1", "Director1", "02:30:55", 2009);
+		Movie m2 = new Movie("Movie2", "Director1", "02:25:07", 2011);
+		Movie m3 = new Movie("Movie3", "Director2", "01:30:57", 2013);
+		Movie m4 = new Movie("Movie4", "Director2", "01:42:53", 2017);
+		Movie m5 = new Movie("Movie5", "Director2", "01:37:37", 2019);
+		Movie m6 = new Movie("Movie6", "Director2", "03:01:57", 2021);
+		Movie m7 = new Movie("Movie7", "Director3", "02:30:17", 2013);
+		Movie m8 = new Movie("Movie8", "Director3", "02:40:37", 2009);
+		Movie m9 = new Movie("Movie9", "Director4", "02:30:37", 2011);
+		Movie m10 = new Movie("Movie10", "Director5", "01:30:57", 2013);
+		
+		List<Movie> movies = new ArrayList<Movie>();
+		movies.add(m1);
+		movies.add(m2);
+		movies.add(m3);
+		movies.add(m4);
+		movies.add(m5);
+		movies.add(m6);
+		movies.add(m7);
+		movies.add(m8);
+		movies.add(m9);
+		movies.add(m10);
+		
+		HashMap<String, List<String>> directorMap = new HashMap<String, List<String>>();
+		
+		for(Movie m : movies) {
+			String director = m.getDirectorName();
+			if((!directorMap.containsKey(director))) {
+				List<String> temp = new ArrayList<String>();
+				temp.add(m.getName());
+				directorMap.put(director, temp);
+			}
+			else {
+//				List <String> temp = directorMap.get(director);
+//				temp.add(m.getName());
+//				directorMap.replace(director, temp);
+				
+				directorMap.get(director).add(m.getName());
+			}
+		}
+		
+		System.out.println(directorMap);
+		
+		System.out.println(searchMovies(directorMap, "Director2"));
+		
+		
+		
+		
+
+	}
+	
+	public static List<String> searchMovies(HashMap <String, List<String>> directorMap, String director) {
+		return directorMap.get(director);
+	}
+
+}
+
+
+public class Movie {
+
+	private String name;
+	private String directorName;
+	private String duration;
+	private int releasedYear;
+	
+	public Movie(String name, String directorName, String duration, int releasedYear) {
+		this.name = name;
+		this.directorName = directorName;
+		this.duration = duration;
+		this.releasedYear = releasedYear;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDirectorName() {
+		return directorName;
+	}
+
+	public void setDirectorName(String directorName) {
+		this.directorName = directorName;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public int getReleasedYear() {
+		return releasedYear;
+	}
+
+	public void setReleasedYear(int releasedYear) {
+		this.releasedYear = releasedYear;
+	}
+	
+	
+
+}
+
+

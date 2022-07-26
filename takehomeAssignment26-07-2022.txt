@@ -1,0 +1,419 @@
+Name: Himakar Sandiri
+e-Mail ID: himakarsandiri@gmail.com
+
+Takehome assignment 26-07-2022
+
+public class Card {
+	
+	private String rank;
+	private String suit;
+	
+	public Card(String rank, String suit) {
+		this.rank = rank;
+		this.suit = suit;
+	}
+
+	public String getRank() {
+		return rank;
+	}
+
+	public String getSuit() {
+		return suit;
+	}
+
+	@Override
+	public String toString() {
+		return "Card [rank=" + rank + ", suit=" + suit + "]";
+	}
+	
+}
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Deck {
+	
+	private List<Card> cards = new ArrayList<Card>();
+	private List<String> ranks = new ArrayList<String>();
+	private List<String> suits = new ArrayList<String>();
+	
+	public Deck() {
+		initializeRanks();
+		initializeSuits();
+		initializeDeck();
+		
+	}
+	
+	public void initializeDeck() {
+		
+		for(String suit : this.suits) {
+			for(String rank : this.ranks) {
+				Card card = new Card(rank, suit);
+				this.cards.add(card);
+			}
+		}
+		
+	}
+	
+	public void initializeRanks() {
+		this.ranks.add("Ace");
+		this.ranks.add("2");
+		this.ranks.add("3");
+		this.ranks.add("4");
+		this.ranks.add("5");
+		this.ranks.add("6");
+		this.ranks.add("7");
+		this.ranks.add("8");
+		this.ranks.add("9");
+		this.ranks.add("10");
+		this.ranks.add("Jack");
+		this.ranks.add("Queen");
+		this.ranks.add("King");
+	}
+	
+	public void initializeSuits() {
+		this.suits.add("Diamonds");
+		this.suits.add("Clubs");
+		this.suits.add("Hearts");
+		this.suits.add("Spades");
+		
+	}
+	
+	public void shuffleCards() {
+		Collections.shuffle(cards);
+	}
+	
+	public void displayDeck() {
+		System.out.println(this.cards);
+	}
+
+	public List<Card> getCards() {
+		return cards;
+	}
+	
+	public List<String> getRanks() {
+		return ranks;
+	}
+	
+	public List<String> getSuits() {
+		return suits;
+	}
+	
+}
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Game {
+	
+	private int numberOfPlayers;
+	private List<Player> playersList = new ArrayList<Player>();
+	private Deck gameDeck;
+	private List<Card> inList = new ArrayList<Card>();
+	private List<Card> outList = new ArrayList<Card>();
+	private List<Card> cardsSelectedByPlayers = new ArrayList<Card>();
+	private Player winner;
+	private Player host;
+	
+	
+	public Game() {
+		this.gameDeck = new Deck();
+	}
+	
+	public void takePlayersDetails() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter the number of players: ");
+		this.numberOfPlayers = sc.nextInt();
+		for(int i = 0; i < numberOfPlayers; i++) {
+			System.out.println("--------Player " + (i + 1) + "--------");
+			
+			sc.nextLine();
+			System.out.print("Enter the name: ");
+			String name = sc.nextLine();
+			
+			System.out.print("Enter the rank of the chosen card: ");
+			String rank = sc.next();
+			boolean validRank = false;
+			while(!validRank) {
+				if(gameDeck.getRanks().contains(rank)) {
+					validRank = true;
+				}
+				else {
+					System.out.print("Enter a valid rank: ");
+					rank = sc.next();
+				}
+			}
+			
+			System.out.print("Enter the suit of the card chosen: ");
+			String suit = sc.next();
+			boolean validSuit = false;
+			while(!validSuit) {
+				if(gameDeck.getSuits().contains(suit)) {
+					validSuit = true;
+				}
+				else {
+					System.out.print("Enter a valid suit: ");
+					suit = sc.next();
+				}
+			}
+			
+			Card card = new Card(rank, suit);
+			boolean cardAlreadySelected = false;
+			for(Card c : cardsSelectedByPlayers) {
+				if((c.getSuit().equals(card.getSuit())) && c.getRank().equals(card.getRank())) {
+					cardAlreadySelected = true;
+				}
+			}
+			
+			System.out.println(cardAlreadySelected);
+			while(cardAlreadySelected) {
+					System.out.println("2 players cannot select the same card.");
+					
+					System.out.print("Enter a valid rank: ");
+					rank = sc.next();
+					validRank = false;
+					while(!validRank) {
+						if(gameDeck.getRanks().contains(rank)) {
+							validRank = true;
+						}
+						else {
+							System.out.print("Enter a valid rank: ");
+							rank = sc.next();
+						}
+					}
+					
+					System.out.print("Enter a valid suit: ");
+					suit = sc.next();
+					validSuit = false;
+					while(!validSuit) {
+						if(gameDeck.getSuits().contains(suit)) {
+							validSuit = true;
+						}
+						else {
+							System.out.print("Enter a valid suit: ");
+							suit = sc.next();
+						}
+					}
+					
+					card = new Card(rank, suit);
+					
+					for(Card c : cardsSelectedByPlayers) {
+						if((c.getSuit().equals(card.getSuit())) && c.getRank().equals(card.getRank())) {
+							cardAlreadySelected = true;
+						}
+						else cardAlreadySelected = false;
+					}
+					
+					System.out.println(cardAlreadySelected);
+			}
+			
+			cardsSelectedByPlayers.add(card);
+			System.out.println(cardsSelectedByPlayers);
+			
+			
+			
+			System.out.print("Enter the orientation (IN/OUT): ");
+			String orientation = sc.next();
+			
+			Player player = new Player(name, card, orientation);
+			
+			this.playersList.add(player);
+			
+		}
+		
+	}
+	
+	public void selectHost() {
+		Random rand = new Random();
+        Player player = playersList.get(rand.nextInt(playersList.size()));
+        this.host =  player;
+        
+        for(Card card : cardsSelectedByPlayers) {
+        	if((card.getRank().equals(player.getChosenCard().getRank())) && (card.getSuit().equals(player.getChosenCard().getSuit()))) {
+        		cardsSelectedByPlayers.remove(card);
+        		break;
+        	}
+        }
+        
+        for(Player p : playersList) {
+        	if((p.getName().equals(player.getName())) && p.getChosenCard().equals(player.getChosenCard())) {
+        		playersList.remove(p);
+        		break;
+        	}
+        }
+        
+        
+	}
+	
+	public void deal() {
+		int count = 0;
+		for(Card card : this.gameDeck.getCards()) {
+			if((count % 2) == 0) {
+				for(Player player : this.playersList) {
+					if(card.getRank().equals(player.getChosenCard().getRank()) && player.getChosenOrientation().equals("IN") && card.getSuit().equals(player.getChosenCard().getSuit())) {
+						System.out.println(player.getName() + " won the game.");
+						this.winner = player;
+//						this.host = winner;
+						return;
+					}
+					else {
+						this.inList.add(card);
+						System.out.println("Added " + card + " to the IN list.");
+						break;
+					}
+				}
+			}
+			else {
+				for(Player player : this.playersList) {
+					if(card.getRank().equals(player.getChosenCard().getRank()) && player.getChosenOrientation().equals("OUT") && card.getSuit().equals(player.getChosenCard().getSuit())) {
+						System.out.println(player.getName() + " won the game.");
+						this.winner = player;
+//						this.host = winner;
+						return;
+					}
+					else {
+						this.outList.add(card);
+						System.out.println("Added " + card + " to the OUT list.");
+						break;
+					}
+				}
+			}
+			count++;
+		}
+		if(count == 52) {
+			this.winner = this.host;
+			System.out.println("Host - " + this.host.getName() + " won the game.");
+		}
+	}
+	
+	public void shuffleCards() {
+		Collections.shuffle(this.gameDeck.getCards());
+	}
+	
+	public void printShuffledCards() {
+		System.out.println(this.gameDeck.getCards());
+	}
+	
+	public List<Player> getPlayers() {
+		return this.playersList;
+	}
+	
+	public Player getHost() {
+		return this.host;
+	}
+	
+	public List<Card> getCardsSelectedByPlayers() {
+		return cardsSelectedByPlayers;
+	}
+	
+	public void continueGame() {
+		if(this.host.getChosenCard() != this.winner.getChosenCard()) {
+			this.playersList.add(host);
+			this.cardsSelectedByPlayers.add(host.getChosenCard());
+			
+			for(Card card : cardsSelectedByPlayers) {
+	        	if((card.getRank().equals(this.winner.getChosenCard().getRank())) && (card.getSuit().equals(this.winner.getChosenCard().getSuit()))) {
+	        		cardsSelectedByPlayers.remove(this.winner);
+	        		break;
+	        	}
+	        }
+	        
+	        for(Player p : playersList) {
+	        	if((p.getName().equals(this.winner.getName())) && p.getChosenCard().equals(this.winner.getChosenCard())) {
+	        		playersList.remove(p);
+	        		break;
+	        	}
+	        }
+			
+		}
+		this.host = this.winner;
+        shuffleCards();
+        System.out.println(getHost().getName() + " is the host.");
+        deal();
+	}
+
+}
+
+public class Player {
+	
+	private String name;
+	private int coins = 100;
+	private Card chosenCard;
+	private String chosenOrientation;
+	
+	public Player(String name, Card chosenCard, String orientation) {
+		this.name = name;
+		this.chosenCard = chosenCard;
+		this.chosenOrientation = orientation;
+	}
+	
+	public void placeBet(int betAmount) {
+		this.coins -= betAmount;
+	}
+	
+	public void addWinnings(int amount) {
+		this.coins += amount;
+	}
+
+	@Override
+	public String toString() {
+		return "Player [name=" + name + ", chosenCard=" + chosenCard + ", chosenOrientation=" + chosenOrientation + "]";
+	}
+	
+	public Card getChosenCard() {
+		return this.chosenCard;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getChosenOrientation() {
+		return this.chosenOrientation;
+	}
+	
+	
+	
+	
+}
+
+import java.util.Scanner;
+
+public class PlayGame {
+
+	public static void main(String[] args) {
+		
+//		Deck deck = new Deck();
+//		deck.displayDeck();
+		
+		Game game = new Game();
+		game.shuffleCards();
+		game.printShuffledCards();
+		game.takePlayersDetails();
+//		System.out.println(game.getPlayers());
+		
+		game.selectHost();
+		System.out.println(game.getHost().getName() + " is the host.");
+		System.out.println(game.getPlayers());
+		System.out.println(game.getCardsSelectedByPlayers());
+		game.deal();
+		
+		Scanner sc = new Scanner(System.in);
+		
+		
+		boolean proceed = true;
+		while(proceed) {
+			System.out.print("Enter YES to continue: ");
+			String option = sc.next();
+			if(option.equals("YES")) {
+				game.continueGame();
+			}
+			else proceed = false;
+		}
+	}
+
+}
